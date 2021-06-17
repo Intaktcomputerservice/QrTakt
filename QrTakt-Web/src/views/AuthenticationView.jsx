@@ -1,12 +1,14 @@
 import React from 'react';
 import { Row, Col } from 'antd';
+import Login from '../components/Login';
+import Register from '../components/Register';
 
-function AuthenticationView(){
+const AuthenticationView = () =>{
     return (
         <>
             <Row>
-                <Col span={12}><div style={{backgroundColor: "red"}}>Login</div></Col>
-                <Col span={12}><div style={{backgroundColor: "green"}}>Register</div></Col>
+                <Col span={12}><div style={{width: "70%"}}><Login /></div></Col>
+                <Col span={12}><div style={{backgroundColor: "green"}}><Register /></div></Col>
             </Row>
         </>
     );
