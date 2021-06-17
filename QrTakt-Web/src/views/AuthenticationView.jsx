@@ -1,17 +1,21 @@
 import React from 'react';
-import { Row, Col } from 'antd';
 import Login from '../components/Login';
 import Register from '../components/Register';
+import { Tabs } from 'antd';
+const { TabPane } = Tabs;
 
-const AuthenticationView = () =>{
-    return (
-        <>
-            <Row>
-                <Col span={12}><div style={{width: "70%"}}><Login /></div></Col>
-                <Col span={12}><div style={{backgroundColor: "green"}}><Register /></div></Col>
-            </Row>
-        </>
-    );
-}
+
+const AuthenticationView = () => (
+    <div>
+        <Tabs defaultActiveKey="1" >
+            <TabPane tab="Login" key="1">
+                <Login />
+            </TabPane>
+            <TabPane tab="Registration" key="2">
+                <Register />
+            </TabPane>
+        </Tabs>
+    </div>
+);
 
 export default AuthenticationView;
