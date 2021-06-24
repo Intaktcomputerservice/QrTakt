@@ -1,40 +1,7 @@
 import React, {useState} from "react";
-import { Form, Input, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd';
-const { Option } = Select;
-const residences = [
-    {
-        value: 'zhejiang',
-        label: 'Zhejiang',
-        children: [
-            {
-                value: 'hangzhou',
-                label: 'Hangzhou',
-                children: [
-                    {
-                        value: 'xihu',
-                        label: 'West Lake',
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        value: 'jiangsu',
-        label: 'Jiangsu',
-        children: [
-            {
-                value: 'nanjing',
-                label: 'Nanjing',
-                children: [
-                    {
-                        value: 'zhonghuamen',
-                        label: 'Zhong Hua Men',
-                    },
-                ],
-            },
-        ],
-    },
-];
+import { Form, Input, Checkbox, Button, AutoComplete } from 'antd';
+import languages from "../languages";
+
 const formItemLayout = {
     labelCol: {
         xs: {
@@ -73,25 +40,14 @@ const Register = () => {
         console.log('Received values of form: ', values);
     };
 
-    const prefixSelector = (
-        <Form.Item name="prefix" noStyle>
-            <Select
-                style={{
-                    width: 70,
-                }}
-            >
-                <Option value="86">+86</Option>
-                <Option value="87">+87</Option>
-            </Select>
-        </Form.Item>
-    );
+
     const [autoCompleteResult, setAutoCompleteResult] = useState([]);
 
     const onWebsiteChange = (value) => {
         if (!value) {
             setAutoCompleteResult([]);
         } else {
-            setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`));
+            setAutoCompleteResult(['.de', '.com', '.org', '.net'].map((domain) => `${value}${domain}`));
         }
     };
 
@@ -106,52 +62,88 @@ const Register = () => {
                 form={form}
                 name="register"
                 onFinish={onFinish}
-                initialValues={{
-                    residence: ['zhejiang', 'hangzhou', 'xihu'],
-                    prefix: '86',
-                }}
-                scrollToFirstError
             >
                 <Form.Item
-                    name="email"
-                    label="E-mail"
+                    name="firmName"
+                    label={languages.LABEL_FIRM}
                     rules={[
                         {
-                            type: 'email',
-                            message: 'The input is not valid E-mail!',
-                        },
-                        {
                             required: true,
-                            message: 'Please input your E-mail!',
-                        },
+                            message: languages.ERROR_MSG_FIRM,
+                        }
                     ]}
                 >
                     <Input />
                 </Form.Item>
 
                 <Form.Item
-                    name="password"
-                    label="Password"
+                    name="firstname"
+                    label={languages.LABEL_FIRSTNAME}
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your password!',
+                            message: languages.ERROR_MSG_LASTNAME
+                        }
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+
+                <Form.Item
+                    name="lastname"
+                    label={languages.LABEL_LASTNAME}
+                    rules={[
+                        {
+                            required: true,
+                            message: languages.ERROR_MSG_LASTNAME
+                        }
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+
+                <Form.Item
+                    name="email"
+                    label={languages.LABEL_EMAIL}
+                    rules={[
+                        {
+                            type: 'email',
+                            message: languages.ERROR_MSG_EMAIL_VALID,
+                        },
+                        {
+                            required: true,
+                            message: languages.ERROR_MSG_EMAIL,
                         },
                     ]}
                     hasFeedback
+                >
+                    <Input />
+                </Form.Item>
+
+
+                <Form.Item
+                    name="password"
+                    label={languages.LABEL_PASSWORD}
+                    hasFeedback
+                    rules={[
+                        {
+                            required: true,
+                            message: languages.ERROR_MSG_PASSWORD
+                        }
+                    ]}
                 >
                     <Input.Password />
                 </Form.Item>
 
                 <Form.Item
                     name="confirm"
-                    label="Confirm Password"
-                    dependencies={['password']}
+                    label={languages.LABEL_PASSWORD_VALID}
                     hasFeedback
+                    dependencies={['password']}
                     rules={[
                         {
                             required: true,
-                            message: 'Please confirm your password!',
+                            message: languages.ERROR_MSG_PASSWORD_VALID,
                         },
                         ({ getFieldValue }) => ({
                             validator(_, value) {
@@ -159,7 +151,7 @@ const Register = () => {
                                     return Promise.resolve();
                                 }
 
-                                return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                                return Promise.reject(new Error(languages.ERROR_MSG_PASSWORD_NOT_VALID));
                             },
                         }),
                     ]}
@@ -168,104 +160,19 @@ const Register = () => {
                 </Form.Item>
 
                 <Form.Item
-                    name="nickname"
-                    label="Nickname"
-                    tooltip="What do you want others to call you?"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your nickname!',
-                            whitespace: true,
-                        },
-                    ]}
+                    name="phone"
+                    label={languages.LABEL_PHONE_NUMBER}
                 >
                     <Input />
                 </Form.Item>
 
                 <Form.Item
-                    name="residence"
-                    label="Habitual Residence"
-                    rules={[
-                        {
-                            type: 'array',
-                            required: true,
-                            message: 'Please select your habitual residence!',
-                        },
-                    ]}
-                >
-                    <Cascader options={residences} />
-                </Form.Item>
-
-                <Form.Item
-                    name="phone"
-                    label="Phone Number"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your phone number!',
-                        },
-                    ]}
-                >
-                    <Input
-                        addonBefore={prefixSelector}
-                        style={{
-                            width: '100%',
-                        }}
-                    />
-                </Form.Item>
-
-                <Form.Item
                     name="website"
-                    label="Website"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input website!',
-                        },
-                    ]}
+                    label={languages.LABEL_WEBSITE}
                 >
-                    <AutoComplete options={websiteOptions} onChange={onWebsiteChange} placeholder="website">
+                    <AutoComplete options={websiteOptions} onChange={onWebsiteChange} placeholder="www.yourside.com">
                         <Input />
                     </AutoComplete>
-                </Form.Item>
-
-                <Form.Item
-                    name="gender"
-                    label="Gender"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please select gender!',
-                        },
-                    ]}
-                >
-                    <Select placeholder="select your gender">
-                        <Option value="male">Male</Option>
-                        <Option value="female">Female</Option>
-                        <Option value="other">Other</Option>
-                    </Select>
-                </Form.Item>
-
-                <Form.Item label="Captcha" extra="We must make sure that your are a human.">
-                    <Row gutter={8}>
-                        <Col span={12}>
-                            <Form.Item
-                                name="captcha"
-                                noStyle
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input the captcha you got!',
-                                    },
-                                ]}
-                            >
-                                <Input />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Button>Get captcha</Button>
-                        </Col>
-                    </Row>
                 </Form.Item>
 
                 <Form.Item
@@ -280,7 +187,7 @@ const Register = () => {
                     {...tailFormItemLayout}
                 >
                     <Checkbox>
-                        I have read the <a href="">agreement</a>
+                        {languages.ARGEEMENT}
                     </Checkbox>
                 </Form.Item>
                 <Form.Item {...tailFormItemLayout}>

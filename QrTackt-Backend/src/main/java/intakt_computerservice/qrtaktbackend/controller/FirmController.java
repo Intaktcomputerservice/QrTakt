@@ -1,6 +1,7 @@
 package intakt_computerservice.qrtaktbackend.controller;
 
 import intakt_computerservice.qrtaktbackend.models.Firm;
+import intakt_computerservice.qrtaktbackend.models.Register;
 import intakt_computerservice.qrtaktbackend.services.FirmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,19 @@ public class FirmController {
     }
 
     @PostMapping
-    public void createFirm(@RequestBody Firm firm){
-        firmService.save(firm);
+    public void createFirm(@RequestBody Register registerForm){
+        Firm firm = new Firm();
+        if(registerForm.isAgreement()){
+            firm.setFirmName(registerForm.getFirmName());
+            firm.setPhoneNumber(registerForm.getPhone());
+            firm.setWebsiteUrl(registerForm.getWebsite());
+            firm.setEmail(registerForm.getEmail());
+            firmService.save(firm);
+        }
+    }
+
+    @GetMapping("exists")
+    public boolean firmExists(@RequestParam String name){
+        return firmService.exists(name);
     }
 }

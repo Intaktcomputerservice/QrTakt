@@ -22,6 +22,11 @@ public class FirmService {
         return firmRepository.findById(id).orElse(null);
     }
 
+    public boolean exists(String name) {
+        return firmRepository.existsByFirmName(name);
+    }
+
+
     public void save(Firm firm){
         //Todo: add exception handling
         firmRepository.save(firm);

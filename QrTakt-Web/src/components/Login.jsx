@@ -34,12 +34,12 @@ const Login = () => {
                 onFinishFailed={onFinishFailed}
             >
                 <Form.Item
-                    label={languages.USERNAME_LABEL}
+                    label={languages.LABEL_USERNAME}
                     name="username"
                     rules={[
                         {
                         required: true,
-                        message: languages.ERROR_MSG_USERNAME_LOGIN,
+                        message: languages.ERROR_MSG_USERNAME,
                         },
                     ]}
                 >
@@ -47,12 +47,12 @@ const Login = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label={languages.PASSWORD_LABEL}
+                    label={languages.LABEL_PASSWORD}
                     name="password"
                     rules={[
                         {
                         required: true,
-                        message: languages.ERROR_MSG_PASSWORD_LOGIN,
+                        message: languages.ERROR_MSG_PASSWORD,
                         },
                     ]}
                 >
